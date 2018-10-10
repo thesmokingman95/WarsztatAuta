@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <option name="USE_RELEASE_OPTION" value="false" />
     <wildcardResourcePatterns>
       <entry name="!?*.java" />
       <entry name="!?*.form" />
@@ -20,8 +19,8 @@
         <module name="WarsztatOld" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="10">
-      <module name="WarsztatOld" target="10" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="WarsztatOld" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

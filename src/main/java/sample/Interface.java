@@ -23,6 +23,8 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,8 +34,10 @@ public class Interface {
 
     DatabseConnection db = new DatabseConnection();
 
+
+
     @FXML //panele okien
-    private AnchorPane anchor, anchorAdd, anchorAddingPart, anchorWarsztat1, anchorWarsztat2;
+    private AnchorPane anchor, anchorAdd, anchorAddingPart, anchorWarsztat1, anchorWarsztat2, mainView;
 
     @FXML //combobox wyboru itemu
     private ComboBox<String> cSelectItem; //bedzie sparametryzowany inaczej - wczytanie z bazy warsztatow
@@ -87,7 +91,11 @@ public class Interface {
     private CheckBox checkDefault;
 
     @FXML
-    private TableView<Warsztat> tableContent;
+    private TableView<Auto> tableContentCar;
+    @FXML
+    private TableView<Warsztat> tableContentWarsztat;
+    @FXML
+    private TableView<Part> tableContentPart;
 
     @FXML
     private ComboBox<String> cbWybierzWarsztat;
@@ -168,6 +176,7 @@ public class Interface {
                 contentStage.requestFocus();
                 contentStage.show();
 
+
 //                WarsztatService warsztatService = new WarsztatService();
 //                Warsztat warsztat = new Warsztat();
 //                warsztat.setId(3L);
@@ -223,10 +232,15 @@ public class Interface {
         }
     }
 
+    @FXML
+    public void initialize() {
+
+
+    }
     @FXML //dodanie widoku zawartosci warsztatow
     public void openWarsztatView() throws IOException {
         if (chWarsztats.isSelected()) {
-            int ktoryWarsztat = tableContent.getSelectionModel().getSelectedIndex();
+            int ktoryWarsztat = tableContentWarsztat.getSelectionModel().getSelectedIndex();
             if (ktoryWarsztat == 0) {//widok warsztatu nr 1
                 try {
                     Parent root = FXMLLoader.load(getClass().getResource("/WarsztatView1.fxml"));
@@ -345,6 +359,13 @@ public class Interface {
             else if (opcjaComboBoxa.equals("Warszawa, Radiowa 16"))
                 dodawanySamochod.setWarsztatId(3L);
             new AutoService().addAuto(dodawanySamochod);
+
+
+            Stage stage = (Stage) anchorAdd.getScene().getWindow();
+            stage.close();
+
+
+
         } else {
             System.err.println("Wyjebalo w kosmos");
         }
@@ -436,29 +457,33 @@ public class Interface {
         if (chCars.isSelected()) {
             chWarsztats.setSelected(false);
             chParts.setSelected(false);
-//              tableContent.setItems(listaSamochodow);
-//
-//
-//            TableColumn<Auto, Long> id = new TableColumn<Auto, Long>("ID");
-//            id.setCellValueFactory(new PropertyValueFactory<Auto, Long>("idTabeli"));
-//
-//            TableColumn<Auto, Long> warsztatId = new TableColumn<Auto, Long>("ID Warsztatu");
-//            warsztatId.setCellValueFactory(new PropertyValueFactory<Auto, Long>("warsztatId"));
-//
-//            TableColumn<Auto, String> marka = new TableColumn<Auto, String>("Marka");
-//            marka.setCellValueFactory(new PropertyValueFactory<Auto, String>("marka"));
-//
-//            TableColumn<Auto, String> model = new TableColumn<Auto, String>("Model");
-//            model.setCellValueFactory(new PropertyValueFactory<Auto, String>("model"));
-//
-//            TableColumn<Auto, String> nrRej = new TableColumn<Auto, String>("Nr tablicy");
-//            nrRej.setCellValueFactory(new PropertyValueFactory<Auto, String>("nrRej"));
-//
-//            tableContent.getColumns().setAll(id, warsztatId, marka, model, nrRej);
+              tableContentCar.setItems(listaSamochodow);
+
+
+            tableContentPart.setVisible(false);
+            tableContentWarsztat.setVisible(false);
+            tableContentCar.setVisible(true);
+
+            TableColumn<Auto, Long> id = new TableColumn<Auto, Long>("ID");
+            id.setCellValueFactory(new PropertyValueFactory<Auto, Long>("idTabeli"));
+
+            TableColumn<Auto, Long> warsztatId = new TableColumn<Auto, Long>("ID Warsztatu");
+            warsztatId.setCellValueFactory(new PropertyValueFactory<Auto, Long>("warsztatId"));
+
+            TableColumn<Auto, String> marka = new TableColumn<Auto, String>("Marka");
+            marka.setCellValueFactory(new PropertyValueFactory<Auto, String>("marka"));
+
+            TableColumn<Auto, String> model = new TableColumn<Auto, String>("Model");
+            model.setCellValueFactory(new PropertyValueFactory<Auto, String>("model"));
+
+            TableColumn<Auto, String> nrRej = new TableColumn<Auto, String>("Nr tablicy");
+            nrRej.setCellValueFactory(new PropertyValueFactory<Auto, String>("nrRej"));
+
+            tableContentCar.getColumns().setAll(id, warsztatId, marka, model, nrRej);
 
         } else {
-            for (int i = 0; i < 5; i++)
-                tableContent.getColumns().get(i).setVisible(false);
+//            for (int i = 0; i < 5; i++)
+//                tableContentCar.getColumns().get(i).setVisible(false);
         }
     }
 
@@ -467,41 +492,45 @@ public class Interface {
         if (chParts.isSelected()) {
             chCars.setSelected(false);
             chWarsztats.setSelected(false);
-//            ObservableList<Part> listaCzesci = new PartService().getAllParts();
-//
-//            tableContent.setItems(listaCzesci);
-//
-//            TableColumn<Part, Long> id = new TableColumn<Part, Long>("ID");
-//            id.setCellValueFactory(new PropertyValueFactory<Part, Long>("idKolumny"));
-//
-//            TableColumn<Part, Long> categoryID = new TableColumn<Part, Long>("Category ID");
-//            categoryID.setCellValueFactory(new PropertyValueFactory<Part, Long>("categoryID"));
-//
-//            TableColumn<Part, Long> warsztatId = new TableColumn<Part, Long>("warsztat ID");
-//            warsztatId.setCellValueFactory(new PropertyValueFactory<Part, Long>("warsztatId"));
-//
-//            TableColumn<Part, String> producent = new TableColumn<Part, String>("Producent");
-//            producent.setCellValueFactory(new PropertyValueFactory<Part, String>("producent"));
-//
-//            TableColumn<Part, String> model = new TableColumn<Part, String>("Model");
-//            model.setCellValueFactory(new PropertyValueFactory<Part, String>("model"));
-//
-//            TableColumn<Part, String> DOT = new TableColumn<Part, String>("DOT");
-//            DOT.setCellValueFactory(new PropertyValueFactory<Part, String>("DOT"));
-//
-//            TableColumn<Part, String> bieznik = new TableColumn<Part, String>("Bieznik");
-//            bieznik.setCellValueFactory(new PropertyValueFactory<Part, String>("bieznik"));
-//
-//            TableColumn<Part, Integer> półka = new TableColumn<Part, Integer>("Półka");
-//            półka.setCellValueFactory(new PropertyValueFactory<Part, Integer>("pólka"));
-//
-//            TableColumn<Part, Integer> miejsce = new TableColumn<Part, Integer>("Miejsce");
-//            miejsce.setCellValueFactory(new PropertyValueFactory<Part, Integer>("miejsce"));
-//
-//            TableColumn<Part, Integer> rząd = new TableColumn<Part, Integer>("Rząd");
-//            rząd.setCellValueFactory(new PropertyValueFactory<Part, Integer>("rząd"));
-//
-//            tableContent.getColumns().setAll(id, categoryID, warsztatId, producent, model, półka, miejsce, rząd, DOT, bieznik);
+            ObservableList<Part> listaCzesci = new PartService().getAllParts();
+
+            tableContentCar.setVisible(false);
+            tableContentPart.setVisible(true);
+            tableContentWarsztat.setVisible(false);
+
+            tableContentPart.setItems(listaCzesci);
+
+            TableColumn<Part, Long> id = new TableColumn<Part, Long>("ID");
+            id.setCellValueFactory(new PropertyValueFactory<Part, Long>("idKolumny"));
+
+            TableColumn<Part, Long> categoryID = new TableColumn<Part, Long>("Category ID");
+            categoryID.setCellValueFactory(new PropertyValueFactory<Part, Long>("categoryID"));
+
+            TableColumn<Part, Long> warsztatId = new TableColumn<Part, Long>("warsztat ID");
+            warsztatId.setCellValueFactory(new PropertyValueFactory<Part, Long>("warsztatId"));
+
+            TableColumn<Part, String> producent = new TableColumn<Part, String>("Producent");
+            producent.setCellValueFactory(new PropertyValueFactory<Part, String>("producent"));
+
+            TableColumn<Part, String> model = new TableColumn<Part, String>("Model");
+            model.setCellValueFactory(new PropertyValueFactory<Part, String>("model"));
+
+            TableColumn<Part, String> DOT = new TableColumn<Part, String>("DOT");
+            DOT.setCellValueFactory(new PropertyValueFactory<Part, String>("DOT"));
+
+            TableColumn<Part, String> bieznik = new TableColumn<Part, String>("Bieznik");
+            bieznik.setCellValueFactory(new PropertyValueFactory<Part, String>("bieznik"));
+
+            TableColumn<Part, Integer> półka = new TableColumn<Part, Integer>("Półka");
+            półka.setCellValueFactory(new PropertyValueFactory<Part, Integer>("pólka"));
+
+            TableColumn<Part, Integer> miejsce = new TableColumn<Part, Integer>("Miejsce");
+            miejsce.setCellValueFactory(new PropertyValueFactory<Part, Integer>("miejsce"));
+
+            TableColumn<Part, Integer> rząd = new TableColumn<Part, Integer>("Rząd");
+            rząd.setCellValueFactory(new PropertyValueFactory<Part, Integer>("rząd"));
+
+            tableContentPart.getColumns().setAll(id, categoryID, warsztatId, producent, model, półka, miejsce, rząd, DOT, bieznik);
         }
     }
 
@@ -511,8 +540,12 @@ public class Interface {
             chParts.setSelected(false);
             chCars.setSelected(false);
 
+            tableContentCar.setVisible(false);
+            tableContentPart.setVisible(false);
+            tableContentWarsztat.setVisible(true);
+
             ObservableList<Warsztat> listaWarsztatow = new WarsztatService().getAllWarsztat();
-            tableContent.setItems(listaWarsztatow);
+            tableContentWarsztat.setItems(listaWarsztatow);
 
             TableColumn<Warsztat, Long> id = new TableColumn<Warsztat, Long>("ID");
             id.setCellValueFactory(new PropertyValueFactory<Warsztat, Long>("idKolumny"));
@@ -523,37 +556,39 @@ public class Interface {
             TableColumn<Warsztat, String> ulica = new TableColumn<Warsztat, String>("Ulica");
             ulica.setCellValueFactory(new PropertyValueFactory<Warsztat, String>("ulica"));
 
-            tableContent.getColumns().setAll(id, ulica, miejscowosc);
+            tableContentWarsztat.getColumns().setAll(id, ulica, miejscowosc);
         }
     }
 
     @FXML //przycisk usuwajacy z bazy samochod albo czesc
     public void deleteFromDatabase() {
         if (chCars.isSelected()) {
-            if (tableContent.getSelectionModel().getSelectedIndex() != -1) {
+            if (tableContentCar.getSelectionModel().getSelectedIndex() != -1) {
                 AutoService autoService = new AutoService();
                 ObservableList<Auto> samochody = autoService.getAllCars();
                 Auto auto = new Auto();
-                System.out.println(tableContent.getSelectionModel().getSelectedIndex());
-                Auto wybrany = samochody.get(tableContent.getSelectionModel().getSelectedIndex());
+                System.out.println(tableContentCar.getSelectionModel().getSelectedIndex());
+                Auto wybrany = samochody.get(tableContentCar.getSelectionModel().getSelectedIndex());
                 auto.setId(wybrany.getId());
                 autoService.deleteAuto(auto);
+                isCarsSelected();
             }
         } else if (chParts.isSelected()) {
-            if (tableContent.getSelectionModel().getSelectedIndex() != -1) {
+            if (tableContentPart.getSelectionModel().getSelectedIndex() != -1) {
                 PartService partService = new PartService();
                 ObservableList<Part> party = partService.getAllParts();
                 Part part = new Part();
-                Part wybrany = party.get(tableContent.getSelectionModel().getSelectedIndex());
+                Part wybrany = party.get(tableContentPart.getSelectionModel().getSelectedIndex());
                 part.setId(wybrany.getId());
                 partService.deletePart(part);
+                isPartsSelected();
             }
         } else if (chWarsztats.isSelected()) {
-            if (tableContent.getSelectionModel().getSelectedIndex() != -1) {
+            if (tableContentWarsztat.getSelectionModel().getSelectedIndex() != -1) {
                 WarsztatService warsztatService = new WarsztatService();
                 ObservableList<Warsztat> warsztats = warsztatService.getAllWarsztat();
                 Warsztat warsztat = new Warsztat();
-                Warsztat wybrany = warsztats.get(tableContent.getSelectionModel().getSelectedIndex());
+                Warsztat wybrany = warsztats.get(tableContentWarsztat.getSelectionModel().getSelectedIndex());
                 warsztat.setId(wybrany.getId());
                 warsztatService.deleteWarsztat(warsztat);
             }

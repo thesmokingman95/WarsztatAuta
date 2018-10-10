@@ -6,13 +6,23 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="600.0" prefWidth="945.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Interface">
+<AnchorPane fx:id="mainView" prefHeight="600.0" prefWidth="945.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Interface">
    <children>
-      <TableView fx:id="tableContent" layoutX="310.0" layoutY="29.0" onMouseClicked="#openWarsztatView" prefHeight="526.0" prefWidth="616.0">
+      <TableView fx:id="tableContentCar" layoutX="310.0" layoutY="29.0" onMouseClicked="#openWarsztatView" prefHeight="526.0" prefWidth="616.0" visible="false">
         <columns>
           <TableColumn fx:id="idView" prefWidth="75.0" text="C1" />
         </columns>
       </TableView>
+       <TableView fx:id="tableContentWarsztat" layoutX="310.0" layoutY="29.0" onMouseClicked="#openWarsztatView" prefHeight="526.0" prefWidth="616.0">
+           <columns>
+               <TableColumn fx:id="idView2" prefWidth="75.0" text="C1" />
+           </columns>
+       </TableView>
+       <TableView fx:id="tableContentPart" layoutX="310.0" layoutY="29.0" onMouseClicked="#openWarsztatView" prefHeight="526.0" prefWidth="616.0" visible="false">
+           <columns>
+               <TableColumn fx:id="idView3" prefWidth="75.0" text="C1" />
+           </columns>
+       </TableView>
       <CheckBox fx:id="chCars" layoutX="55.0" layoutY="115.0" mnemonicParsing="false" onAction="#isCarsSelected" prefHeight="25.0" prefWidth="167.0" text="Samochody" />
       <CheckBox fx:id="chParts" layoutX="55.0" layoutY="180.0" mnemonicParsing="false" onAction="#isPartsSelected" prefHeight="25.0" prefWidth="167.0" text="Części" />
       <CheckBox fx:id="chWarsztats" layoutX="55.0" layoutY="249.0" mnemonicParsing="false" onAction="#isWarsztatsSelected" prefHeight="25.0" prefWidth="167.0" selected="true" text="Warsztaty" />
