@@ -1098,163 +1098,143 @@
     <table id="275" parent="2" name="Part">
       <Engine>InnoDB</Engine>
     </table>
-    <table id="276" parent="2" name="PartCategory">
+    <table id="276" parent="2" name="Warsztat">
       <Engine>InnoDB</Engine>
     </table>
-    <table id="277" parent="2" name="Warsztat">
-      <Engine>InnoDB</Engine>
-    </table>
-    <column id="278" parent="274" name="autoId">
+    <column id="277" parent="274" name="autoId">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="279" parent="274" name="warsztatId">
+    <column id="278" parent="274" name="warsztatId">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="280" parent="274" name="auto_marka">
+    <column id="279" parent="274" name="auto_marka">
       <Position>3</Position>
       <DataType>varchar(20)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="281" parent="274" name="auto_model">
+    <column id="280" parent="274" name="auto_model">
       <Position>4</Position>
       <DataType>varchar(20)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="282" parent="274" name="nr_rejestracyjny">
+    <column id="281" parent="274" name="nr_rejestracyjny">
       <Position>5</Position>
       <DataType>varchar(10)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="283" parent="274" name="FK_auto_warsztat">
+    <index id="282" parent="274" name="FK_auto_warsztat">
       <ColNames>warsztatId</ColNames>
     </index>
-    <key id="284" parent="274" name="PRIMARY">
+    <key id="283" parent="274" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>autoId</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="285" parent="274" name="FK_auto_warsztat">
+    <foreign-key id="284" parent="274" name="FK_auto_warsztat">
       <ColNames>warsztatId</ColNames>
       <RefSchemaName>Warsztat</RefSchemaName>
       <RefTableName>Warsztat</RefTableName>
       <RefColNames>warsztatid</RefColNames>
     </foreign-key>
-    <column id="286" parent="275" name="partId">
+    <column id="285" parent="275" name="partId">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="287" parent="275" name="categoryId">
+    <column id="286" parent="275" name="warsztatId">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="288" parent="275" name="warsztatId">
+    <column id="287" parent="275" name="autoId">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="289" parent="275" name="producent">
+    <column id="288" parent="275" name="producent">
       <Position>4</Position>
       <DataType>varchar(15)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="290" parent="275" name="model">
+    <column id="289" parent="275" name="model">
       <Position>5</Position>
       <DataType>varchar(15)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="291" parent="275" name="półka">
+    <column id="290" parent="275" name="półka">
       <Position>6</Position>
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="292" parent="275" name="rząd">
+    <column id="291" parent="275" name="rząd">
       <Position>7</Position>
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="293" parent="275" name="miejsce">
+    <column id="292" parent="275" name="miejsce">
       <Position>8</Position>
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="294" parent="275" name="DOT">
+    <column id="293" parent="275" name="DOT">
       <Position>9</Position>
       <DataType>varchar(15)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="295" parent="275" name="bieznik">
+    <column id="294" parent="275" name="bieznik">
       <Position>10</Position>
       <DataType>varchar(10)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="296" parent="275" name="FK_part_category">
-      <ColNames>categoryId</ColNames>
-    </index>
-    <index id="297" parent="275" name="FK_warsztat_part">
+    <index id="295" parent="275" name="FK_warsztat_part">
       <ColNames>warsztatId</ColNames>
     </index>
-    <key id="298" parent="275" name="PRIMARY">
+    <index id="296" parent="275" name="FK_opona_auto">
+      <ColNames>autoId</ColNames>
+    </index>
+    <key id="297" parent="275" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>partId</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="299" parent="275" name="FK_part_category">
-      <ColNames>categoryId</ColNames>
-      <RefSchemaName>Warsztat</RefSchemaName>
-      <RefTableName>PartCategory</RefTableName>
-      <RefColNames>categoryid</RefColNames>
-    </foreign-key>
-    <foreign-key id="300" parent="275" name="FK_warsztat_part">
+    <foreign-key id="298" parent="275" name="FK_warsztat_part">
       <ColNames>warsztatId</ColNames>
       <RefSchemaName>Warsztat</RefSchemaName>
       <RefTableName>Warsztat</RefTableName>
       <RefColNames>warsztatid</RefColNames>
     </foreign-key>
-    <column id="301" parent="276" name="categoryId">
+    <foreign-key id="299" parent="275" name="FK_opona_auto">
+      <ColNames>autoId</ColNames>
+      <RefSchemaName>Warsztat</RefSchemaName>
+      <RefTableName>Auto</RefTableName>
+      <RefColNames>autoid</RefColNames>
+    </foreign-key>
+    <column id="300" parent="276" name="warsztatId">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="302" parent="276" name="nazwa">
+    <column id="301" parent="276" name="ulica">
       <Position>2</Position>
       <DataType>varchar(15)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="303" parent="276" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>categoryId</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <column id="304" parent="277" name="warsztatId">
-      <Position>1</Position>
-      <DataType>int(11)|0</DataType>
-      <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="305" parent="277" name="ulica">
-      <Position>2</Position>
-      <DataType>varchar(15)|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="306" parent="277" name="miejscowosc">
+    <column id="302" parent="276" name="miejscowosc">
       <Position>3</Position>
       <DataType>varchar(15)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="307" parent="277" name="PRIMARY">
+    <key id="303" parent="276" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>warsztatId</ColNames>
       <Primary>1</Primary>

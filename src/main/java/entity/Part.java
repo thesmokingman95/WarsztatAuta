@@ -7,7 +7,7 @@ public class Part extends Entity{
     private Long warsztatId;
     private String producent;
     private String model;
-    private Long categoryID;
+    private Long autoID;
     private int pólka;
     private int miejsce;
     private int rząd;
@@ -18,11 +18,11 @@ public class Part extends Entity{
 
     }
 
-    public Part(Long id, Long categoryID, Long warsztatId, String producent, String model , int pólka, int miejsce, int rząd, String DOT, String bieznik, Long idKolumny) {
+    public Part(Long id, Long autoID, Long warsztatId, String producent, String model , int pólka, int miejsce, int rząd, String DOT, String bieznik, Long idKolumny) {
         this.id = id;
         this.producent = producent;
         this.model = model;
-        this.categoryID = categoryID;
+        this.autoID = autoID;
         this.pólka = pólka;
         this.miejsce = miejsce;
         this.rząd = rząd;
@@ -56,13 +56,7 @@ public class Part extends Entity{
         this.model = model;
     }
 
-    public Long getCategoryID() {
-        return categoryID;
-    }
 
-    public void setCategoryID(Long categoryID) {
-        this.categoryID = categoryID;
-    }
 
     public int getPólka() {
         return pólka;
@@ -120,6 +114,11 @@ public class Part extends Entity{
         this.idKolumny = idKolumny;
     }
 
+    public Long getAutoID() {
+        return autoID;
+    }
 
-
+    public void setAutoID(Long autoID) {
+        this.autoID = autoID;
+    }
 }

@@ -14,7 +14,7 @@ public class PartService extends Wszystko {
     private Connection connection;
     private Statement statement;
     private final String PARTID = "partId";
-    private final String CAtEGORY_ID = "categoryId";
+    private final String AUTO_ID = "autoId";
     private final String WARSZATT_ID = "warsztatId";
     private final String PRODECENT = "producent";
     private final String MODEL = "model";
@@ -38,7 +38,7 @@ public class PartService extends Wszystko {
 
             while (result.next()) {
                 parts.add(new Part(result.getLong(PARTID),
-                        result.getLong(CAtEGORY_ID),
+                        result.getLong(AUTO_ID),
                         result.getLong(WARSZATT_ID),
                         result.getString(PRODECENT),
                         result.getString(MODEL),
@@ -79,7 +79,7 @@ public class PartService extends Wszystko {
 
             while (result.next()){
                 parts.add( new Part(result.getLong(PARTID),
-                        result.getLong(CAtEGORY_ID),
+                        result.getLong(AUTO_ID),
                         result.getLong(WARSZATT_ID),
                         result.getString(PRODECENT),
                         result.getString(MODEL),
@@ -116,7 +116,7 @@ public class PartService extends Wszystko {
 
             while (result.next()){
                 parts.add( new Part(result.getLong(PARTID),
-                        result.getLong(CAtEGORY_ID),
+                        result.getLong(AUTO_ID),
                         result.getLong(WARSZATT_ID),
                         result.getString(PRODECENT),
                         result.getString(MODEL),
@@ -154,7 +154,7 @@ public class PartService extends Wszystko {
 
             while (result.next()){
                 parts.add( new Part(result.getLong(PARTID),
-                        result.getLong(CAtEGORY_ID),
+                        result.getLong(AUTO_ID),
                         result.getLong(WARSZATT_ID),
                         result.getString(PRODECENT),
                         result.getString(MODEL),
@@ -193,7 +193,7 @@ public class PartService extends Wszystko {
 
             while (result.next()){
                 parts.add( new Part(result.getLong(PARTID),
-                        result.getLong(CAtEGORY_ID),
+                        result.getLong(AUTO_ID),
                         result.getLong(WARSZATT_ID),
                         result.getString(PRODECENT),
                         result.getString(MODEL),
@@ -225,8 +225,8 @@ public class PartService extends Wszystko {
 
             String insert = String.format("Insert into Part (%s, %s, %s, %s, %s,%s,%s, %s, %s) " +
                     "                       VALUES (%d, %d, '%s','%s', %d,%d,%d, '%s', '%s') ",
-                                            CAtEGORY_ID, WARSZATT_ID, PRODECENT, MODEL, PÓLKA, MIEJSCE, RZAD, DOT, BIEZNIK,
-                                            part.getCategoryID(), part.getWarsztatId(), part.getProducent(),part.getModel(),
+                                            AUTO_ID, WARSZATT_ID, PRODECENT, MODEL, PÓLKA, MIEJSCE, RZAD, DOT, BIEZNIK,
+                                            part.getAutoID(), part.getWarsztatId(), part.getProducent(),part.getModel(),
                                             part.getPólka(), part.getMiejsce(), part.getRząd(), part.getDOT(), part.getBieznik() );
             System.out.println(insert);
 
