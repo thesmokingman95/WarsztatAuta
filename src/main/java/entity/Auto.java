@@ -1,6 +1,6 @@
 package entity;
 
-public class Auto extends Entity {
+public class Auto {
 
     private Long idTabeli;
     private Long id;
@@ -8,6 +8,7 @@ public class Auto extends Entity {
     private String marka;
     private String model;
     private String NrRej;
+    private String info;
 
     public Long getIdTabeli() {
         return idTabeli;
@@ -17,18 +18,33 @@ public class Auto extends Entity {
         this.idTabeli = idTabeli;
     }
 
+    public String getInfo(){
+        String temp = "";
+        if(warsztatId == 1){
+            temp = "Warszawa, Orlich Gniazd 2";
+        } else if (warsztatId == 2){
+            temp = "Warszawa, Radiowa 10";
+        }
+        return temp;
+    }
+
+    public String toString(){
+        return getMarka() + " " + getModel() + ", " + getNrRej();
+    }
+
 
     public Auto(){
 
     }
 
-    public Auto(Long id, Long warsztatId, String marka, String model, String nrRej, Long idTabeli) {
+    public Auto(Long id, Long warsztatId, String marka, String model, String nrRej, Long idTabeli, String info) {
         this.id = id;
         this.warsztatId = warsztatId;
         this.marka = marka;
         this.model = model;
         NrRej = nrRej;
         this.idTabeli = idTabeli;
+        this.info = info;
     }
 
     public Long getId() {

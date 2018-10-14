@@ -8,26 +8,26 @@
 
 <AnchorPane fx:id="mainView" prefHeight="600.0" prefWidth="945.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Interface">
    <children>
-      <TableView fx:id="tableContentCar" layoutX="310.0" layoutY="29.0" onMouseClicked="#openWarsztatView" prefHeight="526.0" prefWidth="616.0" visible="false">
+      <TableView fx:id="tableContentCar" layoutX="310.0" layoutY="0.0" onMouseClicked="#openWarsztatView" prefHeight="600.0" prefWidth="756.0" visible="false">
         <columns>
-          <TableColumn fx:id="idView" prefWidth="75.0" text="C1" />
+          <TableColumn fx:id="idView" prefWidth="75.0" text="" />
         </columns>
       </TableView>
-       <TableView fx:id="tableContentWarsztat" layoutX="310.0" layoutY="29.0" onMouseClicked="#openWarsztatView" prefHeight="526.0" prefWidth="616.0">
+       <TableView fx:id="tableContentWarsztat" layoutX="253.0" layoutY="0.0" onMouseClicked="#openWarsztatView" prefHeight="600.0" prefWidth="756.0">
            <columns>
-               <TableColumn fx:id="idView2" prefWidth="75.0" text="C1" />
+               <TableColumn fx:id="idView2" prefWidth="75.0" text="" />
            </columns>
        </TableView>
-       <TableView fx:id="tableContentPart" layoutX="310.0" layoutY="29.0" onMouseClicked="#openWarsztatView" prefHeight="526.0" prefWidth="616.0" visible="false">
+       <TableView fx:id="tableContentPart" layoutX="310.0" layoutY="0.0" onMouseClicked="#openWarsztatView" prefHeight="600.0" prefWidth="756.0" visible="false">
            <columns>
-               <TableColumn fx:id="idView3" prefWidth="75.0" text="C1" />
+               <TableColumn fx:id="idView3" prefWidth="75.0" text="" />
            </columns>
        </TableView>
-      <CheckBox fx:id="chCars" layoutX="55.0" layoutY="115.0" mnemonicParsing="false" onAction="#isCarsSelected" prefHeight="25.0" prefWidth="167.0" text="Samochody" />
-      <CheckBox fx:id="chParts" layoutX="55.0" layoutY="180.0" mnemonicParsing="false" onAction="#isPartsSelected" prefHeight="25.0" prefWidth="167.0" text="Części" />
-      <CheckBox fx:id="chWarsztats" layoutX="55.0" layoutY="249.0" mnemonicParsing="false" onAction="#isWarsztatsSelected" prefHeight="25.0" prefWidth="167.0" selected="true" text="Warsztaty" />
-      <Button fx:id="bDodajDoBazy" layoutX="22.0" layoutY="329.0" mnemonicParsing="false" onAction="#addToDatabase" text="Dodaj" />
-      <Button layoutX="102.0" layoutY="329.0" mnemonicParsing="false" onAction="#deleteFromDatabase" text="Usuń" />
-      <Button layoutX="188.0" layoutY="329.0" mnemonicParsing="false" onAction="#searchInDatabase" text="Szukaj" />
+      <CheckBox fx:id="chCars" layoutX="100.0" layoutY="130.0" mnemonicParsing="false" onAction="#isCarsSelected" prefHeight="25.0" prefWidth="167.0" text="Samochody" />
+      <CheckBox fx:id="chParts" layoutX="100.0" layoutY="180.0" mnemonicParsing="false" onAction="#isPartsSelected" prefHeight="25.0" prefWidth="167.0" text="Opony" />
+      <CheckBox fx:id="chWarsztats" layoutX="100.0" layoutY="230.0" mnemonicParsing="false" onAction="#isWarsztatsSelected" prefHeight="25.0" prefWidth="167.0" selected="true" text="Magazyny" />
+      <Button fx:id="bDodajDoBazy" layoutX="50.0" layoutY="300.0" mnemonicParsing="false" onAction="#addToDatabase" text="Dodaj" />
+      <Button layoutX="120.0" layoutY="300.0" mnemonicParsing="false" onAction="#deleteFromDatabase" text="Usuń" />
+      <Button fx:id="bSearch" layoutX="190.0" layoutY="300.0" mnemonicParsing="false" onAction="#searchInDatabase" text="Szukaj" />
    </children>
 </AnchorPane>

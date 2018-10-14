@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PartService extends Wszystko {
+public class PartService {
 
 
     private Connection connection;
@@ -47,17 +47,79 @@ public class PartService extends Wszystko {
                         result.getInt(RZAD),
                         result.getString(DOT),
                         result.getString(BIEZNIK),
-                        1L));
+                        1L,
+                        "",
+                        ""));
             }
 
             for (int i = 0; i < parts.size(); i++) {
                 parts.get(i).setIdKolumny((long) i + 1);
             }
+
+            ObservableList<Auto> samochody = new AutoService().getAllCars();
+
+           // Auto auto;
+            for (int i = 0; i < parts.size(); i++)
+                for (int j = 0; j < samochody.size(); j++) {
+                    if(parts.get(i).getAutoID() == samochody.get(j).getId())
+                        parts.get(i).setSamochod(samochody.get(j).toString());
+                }
         }
 
         catch(Exception e){
                 e.printStackTrace();
             }
+
+        return party;
+
+    }
+
+    public ObservableList<Part> getPartsByAuto(Long autoID){
+        List<Part> parts = new ArrayList();
+        ObservableList<Part> party = FXCollections.observableList(parts);
+        try {
+            Class.forName(DatabseConnection.getDBDRIVER()).newInstance();
+            connection = DriverManager.getConnection(DatabseConnection.getURL(),
+                    DatabseConnection.getUSER(),
+                    DatabseConnection.getPASSWORD());
+            statement = connection.createStatement();
+            String query = String.format("Select * FROM Part Where autoId = %d", autoID);
+            ResultSet result = statement.executeQuery(query);
+
+
+            while (result.next()) {
+                parts.add(new Part(result.getLong(PARTID),
+                        result.getLong(AUTO_ID),
+                        result.getLong(WARSZATT_ID),
+                        result.getString(PRODECENT),
+                        result.getString(MODEL),
+                        result.getInt(PÓLKA),
+                        result.getInt(MIEJSCE),
+                        result.getInt(RZAD),
+                        result.getString(DOT),
+                        result.getString(BIEZNIK),
+                        1L,
+                        "",
+                        ""));
+            }
+
+            for (int i = 0; i < parts.size(); i++) {
+                parts.get(i).setIdKolumny((long) i + 1);
+            }
+
+            ObservableList<Auto> samochody = new AutoService().getAllCars();
+
+            // Auto auto;
+            for (int i = 0; i < parts.size(); i++)
+                for (int j = 0; j < samochody.size(); j++) {
+                    if(parts.get(i).getAutoID() == samochody.get(j).getId())
+                        parts.get(i).setSamochod(samochody.get(j).toString());
+                }
+        }
+
+        catch(Exception e){
+            e.printStackTrace();
+        }
 
         return party;
 
@@ -87,7 +149,10 @@ public class PartService extends Wszystko {
                         result.getInt(MIEJSCE),
                         result.getInt(RZAD),
                         result.getString(DOT),
-                        result.getString(BIEZNIK), 1L));
+                        result.getString(BIEZNIK),
+                        1L,
+                        "",
+                        ""));
             }
 
 
@@ -125,7 +190,9 @@ public class PartService extends Wszystko {
                         result.getInt(RZAD),
                         result.getString(DOT),
                         result.getString(BIEZNIK),
-                        1L));
+                        1L,
+                        "",
+                        ""));
             }
 
             for(int i=0; i < parts.size(); i++){
@@ -163,7 +230,9 @@ public class PartService extends Wszystko {
                         result.getInt(RZAD),
                         result.getString(DOT),
                         result.getString(BIEZNIK),
-                        1L));
+                        1L,
+                        "",
+                        ""));
             }
 
             for(int i=0; i < parts.size(); i++){
@@ -202,11 +271,16 @@ public class PartService extends Wszystko {
                         result.getInt(RZAD),
                         result.getString(DOT),
                         result.getString(BIEZNIK),
-                        1L));
+                        1L,
+                        "",
+                        ""));
             }
             for(int i=0; i < parts.size(); i++){
                 parts.get(i).setIdKolumny((long) i + 1);
+
             }
+
+
 
         } catch (Exception e) {
             e.printStackTrace();

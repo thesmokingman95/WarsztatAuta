@@ -1,6 +1,6 @@
 package entity;
 
-public class Warsztat extends Entity{
+public class Warsztat {
 
     private Long idKolumny;
     private Long id;

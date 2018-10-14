@@ -1,6 +1,11 @@
 package entity;
 
-public class Part extends Entity{
+import databse.AutoService;
+import databse.PartService;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+public class Part {
 
     private Long idKolumny;
     private Long id;
@@ -13,12 +18,14 @@ public class Part extends Entity{
     private int rząd;
     private String DOT;
     private String bieznik;
+    private String info;
+    private String samochod;
 
     public Part(){
 
     }
 
-    public Part(Long id, Long autoID, Long warsztatId, String producent, String model , int pólka, int miejsce, int rząd, String DOT, String bieznik, Long idKolumny) {
+    public Part(Long id, Long autoID, Long warsztatId, String producent, String model , int pólka, int miejsce, int rząd, String DOT, String bieznik, Long idKolumny, String info, String samochod) {
         this.id = id;
         this.producent = producent;
         this.model = model;
@@ -30,7 +37,30 @@ public class Part extends Entity{
         this.bieznik = bieznik;
         this.warsztatId = warsztatId;
         this.idKolumny = idKolumny;
+        this.info = info;
+        this.samochod = samochod;
     }
+
+
+    public String getInfo(){
+        String temp = "";
+        if(warsztatId == 1){
+            temp = "Warszawa, Orlich Gniazd 2";
+        } else if (warsztatId == 2){
+            temp = "Warszawa, Radiowa 10";
+        }
+        return temp;
+    }
+
+    public String getSamochod() {
+        return samochod;
+    }
+
+    public void setSamochod(String samochod){
+        this.samochod = samochod;
+    }
+
+
 
     public Long getId() {
         return id;
@@ -55,8 +85,6 @@ public class Part extends Entity{
     public void setModel(String model) {
         this.model = model;
     }
-
-
 
     public int getPólka() {
         return pólka;
@@ -121,4 +149,13 @@ public class Part extends Entity{
     public void setAutoID(Long autoID) {
         this.autoID = autoID;
     }
+
+//    public String nazwaAuta(long autoID) {
+//        AutoService autoService = new AutoService();
+//        ObservableList<Auto> autos = autoService.getAllCars();
+//        Auto wybrany = autos.get((int) autoID);
+//       return wybrany.toString();
+//    }
+
+
 }

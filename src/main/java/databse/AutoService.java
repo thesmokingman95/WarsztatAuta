@@ -5,10 +5,7 @@ import entity.Warsztat;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +18,6 @@ public class AutoService {
     private final String MARKA = "auto_marka";
     private final String MODEL = "auto_model";
     private final String REJESTRACJA = "nr_rejestracyjny";
-
 
     public ObservableList<Auto> getAllCars(){
         List<Auto> cars = new ArrayList();
@@ -41,11 +37,13 @@ public class AutoService {
                                     result.getString(MARKA),
                                     result.getString(MODEL),
                                     result.getString(REJESTRACJA),
-                                     1L));
+                                     1L,
+                                    ""));
             }
             for(int i=0; i < cars.size(); i++){
                 cars.get(i).setIdTabeli((long) i + 1);
             }
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,32 +53,39 @@ public class AutoService {
 
     }
 
-    public Auto getAutoByNrRej(String nrRej){
-        Auto auto = new Auto();
+    public ObservableList<Auto> getAutoByNrRej(String nrRej)  {
+        List<Auto> cars = new ArrayList();
+        ObservableList<Auto> autos = FXCollections.observableList(cars);
         try {
             Class.forName(DatabseConnection.getDBDRIVER()).newInstance();
             connection = DriverManager.getConnection(DatabseConnection.getURL(),
                     DatabseConnection.getUSER(),
                     DatabseConnection.getPASSWORD());
+
             statement = connection.createStatement();
             String query = String.format("Select * From Auto Where nr_rejestracyjny = '%s' ", nrRej);
             ResultSet result = statement.executeQuery(query);
 
-
-            while (result.next()){
-                auto.setId( result.getLong(ID));
-                auto.setWarsztatId( result.getLong(WARSZTAT_ID));
-                auto.setMarka(result.getString(MARKA));
-                auto.setModel(result.getString(MODEL));
-                auto.setNrRej(result.getString(REJESTRACJA));
+            while (result.next()) {
+                cars.add(new Auto(result.getLong(ID),
+                        result.getLong(WARSZTAT_ID),
+                        result.getString(MARKA),
+                        result.getString(MODEL),
+                        result.getString(REJESTRACJA),
+                        1L,
+                        ""));
             }
+
+        for(int i=0; i < cars.size(); i++){
+            cars.get(i).setIdTabeli((long) i + 1);
+        }
 
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return auto;
+        return autos;
     }
 
     public void addAuto(Auto auto){
@@ -129,7 +134,7 @@ public class AutoService {
                     DatabseConnection.getUSER(),
                     DatabseConnection.getPASSWORD());
             statement = connection.createStatement();
-            String query = String.format("Select * From Auto Where auto_marka = '%s' ",marka);
+            String query = String.format("Select * From Auto Where auto_marka = %s ",marka);
             ResultSet result = statement.executeQuery(query);
 
             while (result.next()){
@@ -138,7 +143,8 @@ public class AutoService {
                         result.getString(MARKA),
                         result.getString(MODEL),
                         result.getString(REJESTRACJA),
-                        1L));
+                        1L,
+                    ""));
             }
 
 
@@ -167,7 +173,8 @@ public class AutoService {
                         result.getString(MARKA),
                         result.getString(MODEL),
                         result.getString(REJESTRACJA)
-                        , 1L));
+                        , 1L,
+                        ""));
             }
 
 
@@ -196,7 +203,8 @@ public class AutoService {
                         result.getString(MARKA),
                         result.getString(MODEL),
                         result.getString(REJESTRACJA),
-                        1L));
+                        1L,
+                        ""));
             }
 
             for(int i=0; i < cars.size(); i++){

@@ -1,7 +1,5 @@
 package databse;
 
-import sample.Interface;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
