@@ -4,9 +4,9 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="anchorOpony" prefHeight="262.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Interface">
+<AnchorPane fx:id="anchorOpony" prefHeight="262.0" prefWidth="931.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Interface">
    <children>
-      <TableView fx:id="oponyTable" prefHeight="262.0" prefWidth="634.0" />
-      <Button fx:id="bPokazOpony" layoutX="642.0" layoutY="131.0" mnemonicParsing="false" onAction="#pokazOpony" text="Odswiez" />
+      <TableView fx:id="oponyTable" prefHeight="262.0" prefWidth="793.0" />
+      <Button fx:id="bPokazOpony" layoutX="833.0" layoutY="131.0" mnemonicParsing="false" onAction="#pokazOpony" text="Odswiez" />
    </children>
 </AnchorPane>

@@ -6,19 +6,19 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="mainView" prefHeight="600.0" prefWidth="945.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Interface">
+<AnchorPane fx:id="mainView" prefHeight="600.0" prefWidth="945.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Interface">
    <children>
-      <TableView fx:id="tableContentCar" layoutX="310.0" layoutY="0.0" onMouseClicked="#openWarsztatView" prefHeight="600.0" prefWidth="756.0" visible="false">
+      <TableView fx:id="tableContentCar" layoutX="270.0" layoutY="0.0" onMouseClicked="#openWarsztatView" prefHeight="600.0" prefWidth="900.0" visible="false">
         <columns>
           <TableColumn fx:id="idView" prefWidth="75.0" text="" />
         </columns>
       </TableView>
-       <TableView fx:id="tableContentWarsztat" layoutX="253.0" layoutY="0.0" onMouseClicked="#openWarsztatView" prefHeight="600.0" prefWidth="756.0">
+       <TableView fx:id="tableContentWarsztat" layoutX="270.0" layoutY="0.0" onMouseClicked="#openWarsztatView" prefHeight="600.0" prefWidth="900.0">
            <columns>
                <TableColumn fx:id="idView2" prefWidth="75.0" text="" />
            </columns>
        </TableView>
-       <TableView fx:id="tableContentPart" layoutX="310.0" layoutY="0.0" onMouseClicked="#openWarsztatView" prefHeight="600.0" prefWidth="756.0" visible="false">
+       <TableView fx:id="tableContentPart" layoutX="270.0" layoutY="0.0" onMouseClicked="#openWarsztatView" prefHeight="600.0" prefWidth="900.0" visible="false">
            <columns>
                <TableColumn fx:id="idView3" prefWidth="75.0" text="" />
            </columns>

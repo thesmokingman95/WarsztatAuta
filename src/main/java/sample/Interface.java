@@ -1,31 +1,44 @@
 package sample;
 
-import databse.AutoService;
-import databse.DatabseConnection;
-import databse.PartService;
-import databse.WarsztatService;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import databse.*;
 import entity.Auto;
 import entity.Part;
 import entity.Warsztat;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.sql.SQLOutput;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-;
+import java.util.stream.Collectors;
 
 public class Interface {
 
@@ -33,10 +46,10 @@ public class Interface {
     private AnchorPane anchor, anchorAdd, anchorAddingPart, anchorWarsztat1, anchorWarsztat2, mainView, anchorOpony;
 
     @FXML //combobox wyboru itemu
-    private ComboBox<String> cSelectItem, cSelectLocation, cbWybierzWarsztat, cbLokalizacjaCzesci, cbWyborAuta;
+    private ComboBox<String> cSelectItem, cSelectLocation, cbWybierzWarsztat, cbLokalizacjaCzesci, cbWyborAuta, cbMarka, cbModel;
 
     @FXML //przycik zaloguj
-    private Button bLogin, bDodaj, bUsun, bSzukaj, bAddOK, bAdd, bRemove, bSearch, bAnulujCzesc, bDodajCzesc, bDodajDoBazy, bPokazOpony;
+    private Button bLogin, bDodaj, bUsun, bAddOK, bAdd, bRemove, bSearch, bAnulujCzesc, bDodajCzesc, bDodajDoBazy, bPokazOpony;
 
     @FXML
     private CheckBox chCars, chParts, chWarsztats, checkDefault;
@@ -51,24 +64,22 @@ public class Interface {
     private Label lconnectionStatus;
 
     @FXML
-    private TableView<Auto> tableContentCar, carViewWarsztat1, carViewWarsztat2, wyszukaneSamochodyInfo;;
+    private TableView<Auto> tableContentCar, carViewWarsztat1, carViewWarsztat2, wyszukaneSamochodyInfo;
 
     @FXML
     private TableView<Warsztat> tableContentWarsztat;
 
     @FXML
-    private TableView<Part> tableContentPart, oponyTable;
+    private TableView<Part> tableContentPart, oponyTable, oponyTable2;
 
     @FXML
     private TableView<Part> partViewWarsztat1, partViewWarsztat2;
 
-    @FXML
-    private Pane leftPanePartAdd;
 
-    private DatabseConnection db = new DatabseConnection();
+
 
     @FXML //dzialanie przycisku dodaj w oknie contentowym
-    public void addToDatabase() throws IOException {
+    public void addToDatabase()  {
         if (chCars.isSelected()) { //tworzenie okna dodawania samochodu do bazy
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("/addCar.fxml"));
@@ -87,46 +98,36 @@ public class Interface {
                 exc.printStackTrace();
             }
         } else if (chParts.isSelected()) { //tworzenie okna dodawania czesci do bazy
-            Parent root = FXMLLoader.load(getClass().getResource("/addPart.fxml"));
-            Stage partStage = new Stage();
-            Rectangle2D rect = Screen.getPrimary().getVisualBounds();
-            partStage.setTitle("Dodaj oponę do bazy");
-            partStage.setScene(new Scene(root));
-            partStage.setX(rect.getWidth() / 2);
-            partStage.setY(rect.getHeight() / 2 - (rect.getHeight() / 4));
-            partStage.requestFocus();
-            partStage.show();
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("/addPart.fxml"));
+                Stage partStage = new Stage();
+                Rectangle2D rect = Screen.getPrimary().getVisualBounds();
+                partStage.setTitle("Dodaj oponę do bazy");
+                partStage.setScene(new Scene(root));
+                partStage.setX(rect.getWidth() / 2);
+                partStage.setY(rect.getHeight() / 2 - (rect.getHeight() / 4));
+                partStage.requestFocus();
+                partStage.show();
+            } catch (IOException exc) {
+                Logger logger = Logger.getLogger(getClass().getName());
+                logger.log(Level.SEVERE, "Wyjebalo okno");
+                exc.printStackTrace();
+            }
         } else if (chWarsztats.isSelected()) { //dodanie warsztatow - będzie na szrywno i STRACI FUNKCJONALNOSCI
 
         }
     }
 
-    @FXML
-    public void searchInDatabase() { //szukajka
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/search.fxml"));
-            Stage carStage = new Stage();
-            Rectangle2D rect = Screen.getPrimary().getVisualBounds();
-            carStage.setTitle("Wyszukaj");
-            carStage.setScene(new Scene(root));
-            carStage.setX(rect.getWidth() / 2);
-            carStage.setY(rect.getHeight() / 2 - (rect.getHeight() / 4));
-            carStage.requestFocus();
-            carStage.show();
-
-        } catch (IOException exc) {
-            Logger logger = Logger.getLogger(getClass().getName());
-            logger.log(Level.SEVERE, "Wyjebalo okno");
-            exc.printStackTrace();
-        }
-    }
 
     @FXML
     public void searchCarInDatabase(){
         if(!tSzukajka.getText().isEmpty()) {
+
             String tempString = tSzukajka.getText();
             ObservableList<Auto> listaSamochodow = new AutoService().getAutoByNrRej(tempString);
             wyszukaneSamochodyInfo.setItems(listaSamochodow);
+            SelectedAuto.bania = tempString;
+            System.out.println(SelectedAuto.bania);
 
             TableColumn<Auto, Long> id = new TableColumn<Auto, Long>("ID");
             id.setCellValueFactory(new PropertyValueFactory<Auto, Long>("idTabeli"));
@@ -144,59 +145,68 @@ public class Interface {
             adresWarsztatu.setCellValueFactory(new PropertyValueFactory<Auto, String>("info"));
 
             wyszukaneSamochodyInfo.getColumns().setAll(id, marka, model, nrRej, adresWarsztatu);
+
        }
     }
 
+
     @FXML
     public void selectWarsztat(){
+
 
     }
 
     @FXML
     public void pokazOpony(){ //widok na opony n-tego samochodu
 
+        System.out.println(SelectedAuto.idx+ " z metody");
 
+        AutoService autoService = new AutoService();
+        ObservableList<Auto> samochody = autoService.getAllCars();
+        Auto auto = new Auto();
+        Auto wybrany = samochody.get(SelectedAuto.idx);
+        auto.setId(wybrany.getId());
 
+        ObservableList<Part> tablicaOpon = new PartService().getPartsByAuto(auto.getId());
 
-        ObservableList<Part> listaCzesci = new PartService().getPartsByAuto(1L);
+        oponyTable.setItems(tablicaOpon);
 
+        System.out.println(tablicaOpon);
 
-        oponyTable.setItems(listaCzesci);
+        TableColumn<Part, Long> id3 = new TableColumn<Part, Long>("ID");
+        id3.setCellValueFactory(new PropertyValueFactory<Part, Long>("idKolumny"));
 
-        TableColumn<Part, Long> id = new TableColumn<Part, Long>("ID");
-        id.setCellValueFactory(new PropertyValueFactory<Part, Long>("idKolumny"));
+        TableColumn<Part, Long> idc3 = new TableColumn<Part, Long>("I2D");
+        idc3.setCellValueFactory(new PropertyValueFactory<Part, Long>("autoID"));
 
-        TableColumn<Part, Long> idc = new TableColumn<Part, Long>("I2D");
-        idc.setCellValueFactory(new PropertyValueFactory<Part, Long>("autoID"));
+        TableColumn<Part, String> producent3 = new TableColumn<Part, String>("Producent");
+        producent3.setCellValueFactory(new PropertyValueFactory<Part, String>("producent"));
 
-        TableColumn<Part, String> producent = new TableColumn<Part, String>("Producent");
-        producent.setCellValueFactory(new PropertyValueFactory<Part, String>("producent"));
+        TableColumn<Part, String> model3 = new TableColumn<Part, String>("Model");
+        model3.setCellValueFactory(new PropertyValueFactory<Part, String>("model"));
 
-        TableColumn<Part, String> model = new TableColumn<Part, String>("Model");
-        model.setCellValueFactory(new PropertyValueFactory<Part, String>("model"));
+        TableColumn<Part, String> DOT3 = new TableColumn<Part, String>("DOT");
+        DOT3.setCellValueFactory(new PropertyValueFactory<Part, String>("DOT"));
 
-        TableColumn<Part, String> DOT = new TableColumn<Part, String>("DOT");
-        DOT.setCellValueFactory(new PropertyValueFactory<Part, String>("DOT"));
+        TableColumn<Part, String> bieznik3 = new TableColumn<Part, String>("Bieznik");
+        bieznik3.setCellValueFactory(new PropertyValueFactory<Part, String>("bieznik"));
 
-        TableColumn<Part, String> bieznik = new TableColumn<Part, String>("Bieznik");
-        bieznik.setCellValueFactory(new PropertyValueFactory<Part, String>("bieznik"));
+        TableColumn<Part, Integer> półka3 = new TableColumn<Part, Integer>("Półka");
+        półka3.setCellValueFactory(new PropertyValueFactory<Part, Integer>("pólka"));
 
-        TableColumn<Part, Integer> półka = new TableColumn<Part, Integer>("Półka");
-        półka.setCellValueFactory(new PropertyValueFactory<Part, Integer>("pólka"));
+        TableColumn<Part, Integer> miejsce3 = new TableColumn<Part, Integer>("Miejsce");
+        miejsce3.setCellValueFactory(new PropertyValueFactory<Part, Integer>("miejsce"));
 
-        TableColumn<Part, Integer> miejsce = new TableColumn<Part, Integer>("Miejsce");
-        miejsce.setCellValueFactory(new PropertyValueFactory<Part, Integer>("miejsce"));
+        TableColumn<Part, Integer> rząd3 = new TableColumn<Part, Integer>("Rząd");
+        rząd3.setCellValueFactory(new PropertyValueFactory<Part, Integer>("rząd"));
 
-        TableColumn<Part, Integer> rząd = new TableColumn<Part, Integer>("Rząd");
-        rząd.setCellValueFactory(new PropertyValueFactory<Part, Integer>("rząd"));
+        TableColumn<Part, String> adresWarsztatu3 = new TableColumn<Part, String>("Adres");
+        adresWarsztatu3.setCellValueFactory(new PropertyValueFactory<Part, String>("info"));
 
-        TableColumn<Part, String> adresWarsztatu = new TableColumn<Part, String>("Adres");
-        adresWarsztatu.setCellValueFactory(new PropertyValueFactory<Part, String>("info"));
+        TableColumn<Part, String> auto3 = new TableColumn<Part, String>("Auto");
+        auto3.setCellValueFactory(new PropertyValueFactory<Part, String>("samochod"));
 
-        TableColumn<Part, String> auto = new TableColumn<Part, String>("Auto");
-        auto.setCellValueFactory(new PropertyValueFactory<Part, String>("samochod"));
-
-        oponyTable.getColumns().setAll(id, idc, producent, model, DOT, bieznik, półka, miejsce, rząd, adresWarsztatu, auto);
+        oponyTable.getColumns().setAll(id3, idc3, producent3, model3, DOT3, bieznik3, półka3, miejsce3, rząd3, adresWarsztatu3, auto3);
     }
 
     @FXML //dodanie widoku zawartosci warsztatow
@@ -238,24 +248,7 @@ public class Interface {
                 }
             }
         } else if(chCars.isSelected()){
-            if(tableContentCar.getSelectionModel().getSelectedIndex() != -1) {
-                try {
-                    Parent root = FXMLLoader.load(getClass().getResource("/oponyList.fxml"));
-                    Stage oponyStage = new Stage();
-                    Rectangle2D rect = Screen.getPrimary().getVisualBounds();
-                    oponyStage.setTitle("Widok opon");
-                    oponyStage.setScene(new Scene(root));
-                    oponyStage.setX(rect.getWidth() / 2);
-                    oponyStage.setY(rect.getHeight() / 2 - (rect.getHeight() / 4));
-                    oponyStage.requestFocus();
-                    oponyStage.show();
-                    partViewWarsztat1 = new TableView<Part>();
-                } catch (IOException exc) {
-                    Logger logger = Logger.getLogger(getClass().getName());
-                    logger.log(Level.SEVERE, "Wyjebalo okno");
-                    exc.printStackTrace();
-                }
-            }
+
         }
     }
 
@@ -263,11 +256,11 @@ public class Interface {
     public void confirmAddingCar() {
         Auto dodawanySamochod = new Auto();
 
-        if (!tPodajMarke.getText().isEmpty() && !tPodajModel.getText().isEmpty() && !tPodajNrRej.getText().isEmpty()) {
+        if ( !tPodajNrRej.getText().isEmpty()) {
             ObservableList<Auto> listaSamochodow = new AutoService().getAllCars();
             System.out.println(listaSamochodow.size());
-            dodawanySamochod.setMarka(tPodajMarke.getText());
-            dodawanySamochod.setModel(tPodajModel.getText());
+            dodawanySamochod.setMarka(cbMarka.getSelectionModel().getSelectedItem());
+            dodawanySamochod.setModel(cbModel.getSelectionModel().getSelectedItem());
             dodawanySamochod.setNrRej(tPodajNrRej.getText());
             dodawanySamochod.setId(5L);
 
@@ -280,6 +273,9 @@ public class Interface {
 
             Stage stage = (Stage) anchorAdd.getScene().getWindow();
             stage.close();
+
+            Stage carStage = (Stage) mainView.getScene().getWindow();
+
 
         } else {
             System.err.println("Wyjebalo w kosmos");
@@ -347,6 +343,7 @@ public class Interface {
     public void isCarsSelected() {
 
         if (chCars.isSelected()) {
+
             chWarsztats.setSelected(false);
             chParts.setSelected(false);
 
@@ -377,8 +374,41 @@ public class Interface {
 
             tableContentCar.getColumns().setAll(id, marka, model, nrRej, adresWarsztatu, idC);
 
-        }
+            //if(tableContentCar.getSelectionModel().getSelectedIndex() != -1) {
+
+
+
+                tableContentCar.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        if (event.getButton().equals(MouseButton.SECONDARY)) {
+                            try {
+                                SelectedAuto.idx = tableContentCar.getSelectionModel().getSelectedIndex();
+                                Parent root = FXMLLoader.load(getClass().getResource("/oponyList.fxml"));
+                                Stage oponyStage = new Stage();
+                                Rectangle2D rect = Screen.getPrimary().getVisualBounds();
+                                oponyStage.setTitle("Widok opon");
+                                oponyStage.setScene(new Scene(root));
+                                oponyStage.setX(rect.getWidth() / 2);
+                                oponyStage.setY(rect.getHeight() / 2 - (rect.getHeight() / 4));
+                                oponyStage.requestFocus();
+                                oponyStage.showAndWait();
+
+
+                            } catch (IOException exc) {
+                                Logger logger = Logger.getLogger(getClass().getName());
+                                logger.log(Level.SEVERE, "Wyjebalo okno");
+                                exc.printStackTrace();
+                            }
+                        }
+                    }
+                });
+            }
+
+      //  }
     }
+
+
 
     @FXML  //wyswiertlanie widoku czesci w TableView
     public void isPartsSelected() {
@@ -523,7 +553,6 @@ public class Interface {
     public void cancelAddingPart() {
         Stage stage = (Stage) anchorAddingPart.getScene().getWindow();
         stage.close();
-        stage.close();
     }
 
     @FXML
@@ -637,7 +666,6 @@ public class Interface {
         TableColumn<Part, Long> id = new TableColumn<Part, Long>("ID");
         id.setCellValueFactory(new PropertyValueFactory<Part, Long>("idKolumny"));
 
-
         TableColumn<Part, String> producent = new TableColumn<Part, String>("Producent");
         producent.setCellValueFactory(new PropertyValueFactory<Part, String>("producent"));
 
@@ -686,5 +714,162 @@ public class Interface {
         }
         return true;
     }
+
+    @FXML
+    public void wybierzMarke(){
+
+        BufferedReader br = null;
+        AvaibleCars cars = null;
+        try {
+            br = new BufferedReader(new FileReader( "src/main/resources/cars"));
+            cars = new Gson().fromJson(br, AvaibleCars.class);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(cars.getCars().size());
+        ObservableList<String> avaibleCars = FXCollections.observableArrayList();
+        avaibleCars.addAll( cars.getCars().stream().map( a -> a.getBrand()).collect(Collectors.toList()) );
+        cbMarka.setItems(avaibleCars);
+
+    }
+
+    @FXML
+    public void wybierzModel(){
+
+    }
+
+    public void dodajModele(ActionEvent actionEvent) {
+        BufferedReader br = null;
+        AvaibleCars cars = null;
+        Type listType = new TypeToken<List<AvaibleCars>>() {}.getType();
+        ArrayList<String> arrayList = null;
+        List<AvaibleCars> myList = null;
+        try {
+            br = new BufferedReader(new FileReader( "src/main/resources/cars"));
+            cars = new Gson().fromJson(br, AvaibleCars.class);
+            //myList = new Gson().fromJson(br, listType);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+       // Collections.sort(myList);
+
+
+        if(cbMarka.getSelectionModel().getSelectedIndex() != -1) {
+            ObservableList<String> models = FXCollections.observableArrayList();
+            models.addAll(cars.getCars().get(cbMarka.getSelectionModel().getSelectedIndex()).getModels());
+            cbModel.setItems(models);
+
+        }
+    }
+
+
+    public void pokazOpons() {
+
+        AutoService autoService = new AutoService();
+        ObservableList<Auto> samochody = autoService.getAutoByNrRej(SelectedAuto.bania);
+        System.out.println(SelectedAuto.bania);
+        Auto auto = new Auto();
+        Auto wybrany = samochody.get(0);
+        auto.setId(wybrany.getId());
+
+        System.out.println(SelectedAuto.bania);
+
+        ObservableList<Part> party = new PartService().getPartsByAuto(wybrany.getId());
+
+        System.out.println(party.toString());
+
+        oponyTable2.setItems(party);
+
+        TableColumn<Part, Long> id3 = new TableColumn<Part, Long>("ID");
+        id3.setCellValueFactory(new PropertyValueFactory<Part, Long>("idKolumny"));
+
+        TableColumn<Part, Long> idc3 = new TableColumn<Part, Long>("I2D");
+        idc3.setCellValueFactory(new PropertyValueFactory<Part, Long>("autoID"));
+
+        TableColumn<Part, String> producent3 = new TableColumn<Part, String>("Producent");
+        producent3.setCellValueFactory(new PropertyValueFactory<Part, String>("producent"));
+
+        TableColumn<Part, String> model3 = new TableColumn<Part, String>("Model");
+        model3.setCellValueFactory(new PropertyValueFactory<Part, String>("model"));
+
+        TableColumn<Part, String> DOT3 = new TableColumn<Part, String>("DOT");
+        DOT3.setCellValueFactory(new PropertyValueFactory<Part, String>("DOT"));
+
+        TableColumn<Part, String> bieznik3 = new TableColumn<Part, String>("Bieznik");
+        bieznik3.setCellValueFactory(new PropertyValueFactory<Part, String>("bieznik"));
+
+        TableColumn<Part, Integer> półka3 = new TableColumn<Part, Integer>("Półka");
+        półka3.setCellValueFactory(new PropertyValueFactory<Part, Integer>("pólka"));
+
+        TableColumn<Part, Integer> miejsce3 = new TableColumn<Part, Integer>("Miejsce");
+        miejsce3.setCellValueFactory(new PropertyValueFactory<Part, Integer>("miejsce"));
+
+        TableColumn<Part, Integer> rząd3 = new TableColumn<Part, Integer>("Rząd");
+        rząd3.setCellValueFactory(new PropertyValueFactory<Part, Integer>("rząd"));
+
+        TableColumn<Part, String> adresWarsztatu3 = new TableColumn<Part, String>("Adres");
+        adresWarsztatu3.setCellValueFactory(new PropertyValueFactory<Part, String>("info"));
+
+        TableColumn<Part, String> auto3 = new TableColumn<Part, String>("Auto");
+        auto3.setCellValueFactory(new PropertyValueFactory<Part, String>("samochod"));
+
+        oponyTable2.getColumns().setAll(id3, idc3, producent3, model3, DOT3, bieznik3, półka3, miejsce3, rząd3, adresWarsztatu3, auto3);
+
+    }
+
+    @FXML
+    public void searchInDatabase() { //szukajka
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/search.fxml"));
+            Stage carStage = new Stage();
+            Rectangle2D rect = Screen.getPrimary().getVisualBounds();
+            carStage.setTitle("Wyszukaj");
+            carStage.setScene(new Scene(root));
+            carStage.setX(rect.getWidth() / 2);
+            carStage.setY(rect.getHeight() / 2 - (rect.getHeight() / 4));
+            carStage.requestFocus();
+            carStage.show();
+
+        } catch (IOException exc) {
+            Logger logger = Logger.getLogger(getClass().getName());
+            logger.log(Level.SEVERE, "Wyjebalo okno");
+            exc.printStackTrace();
+        }
+    }
+
+
+    @FXML
+    public void pokazOponySamochodu() {
+        if(wyszukaneSamochodyInfo.getSelectionModel().getSelectedIndex() != -1) {
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("/listaOpon.fxml"));
+                Stage oponyStage2 = new Stage();
+                Rectangle2D rect = Screen.getPrimary().getVisualBounds();
+                oponyStage2.setTitle("Widok opon 2");
+                oponyStage2.setScene(new Scene(root));
+                oponyStage2.setX(rect.getWidth() / 2);
+                oponyStage2.setY(rect.getHeight() / 2 - (rect.getHeight() / 4));
+                oponyStage2.requestFocus();
+                oponyStage2.show();
+
+
+            } catch (IOException exc) {
+                Logger logger = Logger.getLogger(getClass().getName());
+                logger.log(Level.SEVERE, "Wyjebalo okno");
+                exc.printStackTrace();
+            }
+        }
+
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////MENU BAR ////////////////////
+
+
+
+
 
 }
